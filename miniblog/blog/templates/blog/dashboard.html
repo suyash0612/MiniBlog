@@ -1,0 +1,83 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block msg %}
+    {% if messages %}
+        {% for mess in messages %}
+            <div {% if mess.tags %} class="alert alert-{{mess.tags}} alert-dismissisble fade show mt-2" {% endif %}>
+                <strong>{{mess}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock msg %}
+
+{% block side %}
+<div class="card-body text-center text-white">
+    <div class="row d-flex justify-content-center bg-light ">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+        class="rounded-circle img-fluid" style="width: 150px;">
+    </div>
+    <div class="row d-flex justify-content-center text-dark bg-light ">
+        <p class="text">
+            <h5 class="my-3">
+                {{full_name}}
+            </h5>
+        </p>
+    </div>
+    <div class="row d-flex justify-content-center text-dark bg-light ">
+        <p class="text-muted">
+            {% for group in groups %}
+                {{group.name}}
+            {% endfor %}
+        </p>
+    </div>
+</div>
+{% endblock side %}
+
+
+{% block content %}
+    <div class="col-sm-9">
+        <h4 class='text-white display-4'>DashboardPage</h4>
+        <a href="{% url 'addpostus' %}" class="btn btn-success mb-2" style="width:20%;">Add Post</a>
+        {% if posts %}
+            <table class="table table-striped bg-white">
+                <thead>
+                    <tr class="text-center font-weight-bold">
+                        <th scope="col" style="width:2%">ID</th>
+                        <th scope="col" style="width:28%">Title</th>
+                        <th scope="col" style="width:55%">Description</th>
+                        <th scope="col" style="width:15%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                        <tr class="text-center font-weight-normal" style="color:black;">
+                            <td scope="row">{{post.id}}</td>
+                            <td>{{post.title}}</td>
+                            <td>{{post.desc}}</td>
+                            <td>
+                                <div class="input-group-append">
+                                    <a href="{% url 'updatepostus' post.id %}" class="btn btn-info btn-sm mx-1">Update</a>
+                                    {% if perms.blog.delete_postmodel %}
+                                        <form action="{% url 'deletepostus' post.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="submit" value="Delete" class="btn btn-danger btn-sm" style="display:inline">
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}  
+                </tbody>  
+            </table>
+        {% else %}
+            <div class="row">
+                <h4 class="text-center alert alert-warning">No Records</h4>
+            </div>
+        {% endif %}
+        
+    </div>
+{% endblock content %}

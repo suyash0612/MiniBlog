@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="col-sm-10">
+        <h3 class="text-white my-3">Dashboard/Update Post</h3>
+        <form action="" method="post" class="text-white">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Submit" class="btn btn-success">
+            {% comment %} <input type="button" value="Clear" id="resetbtn" onClick="this.form.reset()" /> {% endcomment %}
+            <a href="/dashboard/" class="btn btn-warning">Cancel</a>
+            <input type="submit" value="Clear" class="btn btn-info" name="clearform">
+        </form>
+    </div>
+{% endblock content %}
